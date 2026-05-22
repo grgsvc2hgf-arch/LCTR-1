@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>个人作品集</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  :root {
+    --navy: #0a1628;
+    --navy-light: #112240;
+    --navy-card: #1a2d4a;
+    --teal: #00d4aa;
+    --teal-dim: rgba(0,212,170,.15);
+    --text: #ccd6f6;
+    --text-dim: #8892b0;
+    --text-bright: #e6f1ff;
+    --radius: 12px;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+    background: var(--navy);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ---------- nav ---------- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 16px 40px;
+    display: flex; justify-content: flex-end; gap: 32px;
+    background: rgba(10,22,40,.85);
+    backdrop-filter: blur(10px);
+    transition: background .3s;
+  }
+  nav a {
+    color: var(--text-dim); text-decoration: none; font-size: 15px;
+    transition: color .25s;
+  }
+  nav a:hover { color: var(--teal); }
+
+  /* ---------- sections ---------- */
+  section { padding: 100px 24px; max-width: 1000px; margin: 0 auto; }
+
+  .section-title {
+    font-size: 28px; font-weight: 700; color: var(--text-bright);
+    margin-bottom: 48px; display: flex; align-items: center; gap: 12px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--navy-light);
+  }
+  .section-title span { color: var(--teal); font-size: 20px; }
+
+  /* ---------- Hero ---------- */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 24px; max-width: 1000px; margin: 0 auto;
+  }
+  #hero .greeting { color: var(--teal); font-size: 16px; margin-bottom: 12px; }
+  #hero h1 {
+    font-size: clamp(36px, 7vw, 64px); font-weight: 800;
+    color: var(--text-bright); line-height: 1.1; margin-bottom: 16px;
+  }
+  #hero .sub {
+    font-size: clamp(18px, 3.5vw, 28px); color: var(--text-dim);
+    max-width: 600px; margin-bottom: 24px;
+  }
+  #hero .hero-meta {
+    display: flex; flex-wrap: wrap; gap: 16px 28px;
+    margin-bottom: 28px; color: var(--text-dim); font-size: 14px;
+  }
+  #hero .hero-meta span { display: flex; align-items: center; gap: 6px; }
+  #hero .hero-links { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .btn {
+    display: inline-block; padding: 12px 32px;
+    border: 1px solid var(--teal); border-radius: 6px;
+    color: var(--teal); text-decoration: none; font-size: 15px;
+    transition: all .3s; cursor: pointer;
+  }
+  .btn:hover { background: var(--teal-dim); }
+  .btn-sm { padding: 8px 20px; font-size: 13px; }
+
+  /* ---------- about ---------- */
+  #about p { color: var(--text-dim); max-width: 680px; font-size: 16px; }
+  #about p + p { margin-top: 16px; }
+
+  /* ---------- skills ---------- */
+  .skill-category { margin-bottom: 32px; }
+  .skill-cat-title {
+    font-size: 16px; font-weight: 600; color: var(--teal);
+    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+  }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px,1fr));
+    gap: 12px;
+  }
+  .skill-card {
+    background: var(--navy-card); border-radius: var(--radius);
+    padding: 18px 14px; text-align: center;
+    transition: transform .3s, box-shadow .3s;
+  }
+  .skill-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0,212,170,.12);
+  }
+  .skill-card .icon { font-size: 28px; margin-bottom: 6px; }
+  .skill-card .name { font-size: 13px; color: var(--text-bright); font-weight: 600; }
+
+  /* ---------- projects ---------- */
+  .project-list { display: flex; flex-direction: column; gap: 24px; }
+  .project-card {
+    background: var(--navy-card); border-radius: var(--radius);
+    padding: 28px; transition: transform .3s, box-shadow .3s;
+  }
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0,212,170,.08);
+  }
+  .project-card h3 { color: var(--text-bright); margin-bottom: 8px; font-size: 18px; }
+  .project-card p { color: var(--text-dim); font-size: 14px; }
+  .project-card .tags {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px;
+  }
+  .project-card .tags span {
+    background: var(--teal-dim); color: var(--teal);
+    font-size: 12px; padding: 4px 12px; border-radius: 20px;
+  }
+  .project-date {
+    font-size: 13px; color: var(--teal); margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  /* ---------- contact ---------- */
+  #contact p { color: var(--text-dim); margin-bottom: 28px; }
+  .placeholder-text { color: var(--text-dim); font-style: italic; opacity: .6; }
+  .contact-items { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+  .contact-item {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 15px; color: var(--text-dim);
+  }
+  .contact-label { color: var(--text-bright); min-width: 100px; font-weight: 500; }
+
+  /* ---------- footer ---------- */
+  footer {
+    text-align: center; padding: 32px 24px;
+    color: var(--text-dim); font-size: 13px;
+  }
+
+  /* ---------- scroll reveal ---------- */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 640px) {
+    nav { padding: 14px 20px; gap: 18px; }
+    nav a { font-size: 13px; }
+    section { padding: 72px 20px; }
+    .skills-grid { grid-template-columns: repeat(auto-fill, minmax(100px,1fr)); }
+  }
+</style>
+</head>
+<body>
+
+<!-- nav -->
+<nav>
+  <a href="#hero">主页</a>
+  <a href="#about">关于</a>
+  <a href="#skills">技能</a>
+  <a href="#projects">项目</a>
+  <a href="#contact">联系</a>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <p class="greeting">你好，我是</p>
+  <h1>蒋希红</h1>
+  <p class="sub">PHP 高级程序员 &amp; 应用架构师</p>
+  <div class="hero-meta">
+    <span>🎓 河南大学 · 计算机系</span>
+    <span>📍 期望城市：北京</span>
+    <span>💼 期望薪资：15k~20k</span>
+  </div>
+  <div class="hero-links">
+    <a href="http://github.com/easychen" target="_blank" class="btn btn-sm">GitHub</a>
+    <a href="http://old.ftqq.com" target="_blank" class="btn btn-sm">技术博客</a>
+    <a href="#projects" class="btn">查看项目</a>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <h2 class="section-title"><span>01.</span>关于我</h2>
+  <p>
+    河南大学计算机系本科在读（大学三年），热爱编程与技术，专注于 PHP 后端开发与系统架构设计。
+    拥有 3 年项目经验，参与过多个企业级 Web 应用的开发与维护。
+  </p>
+  <p>
+    工作之余活跃于开源社区，维护个人开源项目，撰写技术博客分享开发经验与心得。
+    相信"Show me the code"是最好的说服力。
+  </p>
+</section>
+
+<!-- Skills -->
+<section id="skills">
+  <h2 class="section-title"><span>02.</span>技能</h2>
+  <div class="skill-category">
+    <h3 class="skill-cat-title"><span>🌐</span> Web 开发</h3>
+    <div class="skills-grid">
+      <div class="skill-card"><div class="icon">🐘</div><div class="name">PHP</div></div>
+      <div class="skill-card"><div class="icon">H</div><div class="name">Hack</div></div>
+      <div class="skill-card"><div class="icon">🟢</div><div class="name">Node</div></div>
+    </div>
+  </div>
+  <div class="skill-category">
+    <h3 class="skill-cat-title"><span>📦</span> Web 框架</h3>
+    <div class="skills-grid">
+      <div class="skill-card"><div class="name">ThinkPHP</div></div>
+      <div class="skill-card"><div class="name">Yaf</div></div>
+      <div class="skill-card"><div class="name">Yii</div></div>
+      <div class="skill-card"><div class="name">Laravel</div></div>
+      <div class="skill-card"><div class="name">LazyPHP</div></div>
+    </div>
+  </div>
+  <div class="skill-category">
+    <h3 class="skill-cat-title"><span>🎨</span> 前端</h3>
+    <div class="skills-grid">
+      <div class="skill-card"><div class="name">Bootstrap</div></div>
+      <div class="skill-card"><div class="name">AngularJS</div></div>
+      <div class="skill-card"><div class="name">EmberJS</div></div>
+      <div class="skill-card"><div class="name">HTML5</div></div>
+      <div class="skill-card"><div class="name">Cocos2dJS</div></div>
+      <div class="skill-card"><div class="name">Ionic</div></div>
+    </div>
+  </div>
+  <div class="skill-category">
+    <h3 class="skill-cat-title"><span>🗄️</span> 数据库 &amp; 工具</h3>
+    <div class="skills-grid">
+      <div class="skill-card"><div class="name">MySQL</div></div>
+      <div class="skill-card"><div class="name">PgSQL</div></div>
+      <div class="skill-card"><div class="name">SQLite</div></div>
+      <div class="skill-card"><div class="name">Git</div></div>
+      <div class="skill-card"><div class="name">Svn</div></div>
+      <div class="skill-card"><div class="name">Composer</div></div>
+    </div>
+  </div>
+  <div class="skill-category">
+    <h3 class="skill-cat-title"><span>☁️</span> 云 &amp; 开放平台</h3>
+    <div class="skills-grid">
+      <div class="skill-card"><div class="name">SAE</div></div>
+      <div class="skill-card"><div class="name">BAE</div></div>
+      <div class="skill-card"><div class="name">AWS</div></div>
+      <div class="skill-card"><div class="name">微博开放平台</div></div>
+      <div class="skill-card"><div class="name">微信应用开发</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Experience & Projects -->
+<section id="projects">
+  <h2 class="section-title"><span>03.</span>工作经历</h2>
+  <div class="project-list">
+    <div class="project-card">
+      <div class="project-date">2012.09 — 2014.09</div>
+      <h3>ABC 公司 · DEF 项目</h3>
+      <p>负责项目核心功能开发，在架构设计、性能优化方面表现突出。面对项目中最困难的技术挑战，制定并实施了有效的解决方案，显著提升了系统稳定性和响应速度。</p>
+      <div class="tags"><span>PHP</span><span>ThinkPHP</span><span>MySQL</span></div>
+    </div>
+    <div class="project-card">
+      <div class="project-date">2012.09 — 2014.09</div>
+      <h3>ABC 公司 · GHI 项目</h3>
+      <p>独立负责模块设计与开发，从技术选型到上线全程跟进。通过优化数据库查询和缓存策略，大幅降低了接口响应时间。</p>
+      <div class="tags"><span>PHP</span><span>Yaf</span><span>Redis</span></div>
+    </div>
+    <div class="project-card">
+      <div class="project-date">2010.03 — 2012.08</div>
+      <h3>JKL 公司 · MNO 项目</h3>
+      <p>参与需求分析、系统设计与编码实现。负责核心业务逻辑的开发与维护，保证了项目按时高质量交付。</p>
+      <div class="tags"><span>PHP</span><span>Laravel</span><span>PgSQL</span></div>
+    </div>
+    <div class="project-card">
+      <div class="project-date">2010.03 — 2012.08</div>
+      <h3>JKL 公司 · PQR 项目</h3>
+      <p>负责 API 接口设计与开发，编写单元测试确保代码质量。参与技术方案评审，推动团队采用更高效的开发流程。</p>
+      <div class="tags"><span>PHP</span><span>Yii</span><span>PHPUnit</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Open Source -->
+<section id="opensource">
+  <h2 class="section-title"><span>04.</span>开源 &amp; 作品</h2>
+  <div class="project-list">
+    <div class="project-card">
+      <h3>STU 开源工具库</h3>
+      <p>项目的简要说明，Star 和 Fork 数多的可以注明。</p>
+      <div class="tags"><span>PHP</span><span>开源</span></div>
+    </div>
+    <div class="project-card">
+      <h3>WXYZ 效率组件</h3>
+      <p>专注于 Web 开发效率提升的组件库，设计简洁、易于集成。</p>
+      <div class="tags"><span>PHP</span><span>Composer</span></div>
+    </div>
+    <div class="project-card">
+      <h3>一个产品经理眼中的云计算：前生今世和未来</h3>
+      <p>从技术视角解读云计算的发展历程与未来趋势，帮助非技术背景读者理解云计算的核心价值。</p>
+      <div class="tags"><span>云计算</span><span>技术写作</span></div>
+    </div>
+    <div class="project-card">
+      <h3>HeroKu HTTP API 设计指南（翻译）</h3>
+      <p>翻译国外优质技术文章，帮助国内开发者了解 RESTful API 设计的最佳实践与规范。</p>
+      <div class="tags"><span>翻译</span><span>API 设计</span></div>
+    </div>
+    <div class="project-card">
+      <h3>如何通过 Docker 优化内部开发</h3>
+      <p>2014 架构师大会演讲，分享使用 Docker 优化开发环境与部署流程的实践经验。</p>
+      <div class="tags"><span>Docker</span><span>架构师大会</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <h2 class="section-title"><span>05.</span>联系方式</h2>
+  <div class="contact-items">
+    <div class="contact-item">
+      <span class="contact-label">📧 邮箱</span>
+      <span>goodman@gmail.com</span>
+    </div>
+    <div class="contact-item">
+      <span class="contact-label">📱 手机</span>
+      <span>135-xxxx-xxxx</span>
+    </div>
+    <div class="contact-item">
+      <span class="contact-label">🐦 微博</span>
+      <span>@Easy</span>
+    </div>
+    <div class="contact-item">
+      <span class="contact-label">💻 GitHub</span>
+      <span>github.com/easychen</span>
+    </div>
+    <div class="contact-item">
+      <span class="contact-label">📝 博客</span>
+      <span>old.ftqq.com</span>
+    </div>
+  </div>
+  <p style="margin-top:24px; color:var(--text-dim);">
+    感谢您花时间阅读我的简历，期待能有机会和您共事。
+  </p>
+  <a href="mailto:goodman@gmail.com" class="btn">发送邮件</a>
+</section>
+
+<footer>© 2026 蒋希红. All rights reserved.</footer>
+
+<script>
+  // ---------- scroll reveal ----------
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: .15 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // wrap all section children except .section-title in reveal
+  document.querySelectorAll('section').forEach(sec => {
+    sec.querySelectorAll(':scope > *:not(.section-title):not(h1):not(.greeting):not(.sub):not(.btn)').forEach(el => {
+      el.classList.add('reveal');
+    });
+  });
+  // also reveal cards inside grids / lists
+  document.querySelectorAll('.skill-card, .project-card').forEach(el => el.classList.add('reveal'));
+</script>
+
+</body>
+</html>
